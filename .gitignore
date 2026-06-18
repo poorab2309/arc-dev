@@ -1,0 +1,13 @@
+# Foundry
+contracts/lib/
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+
+# Node
+circle-sdk/node_modules/
+circle-sdk/.env
+circle-sdk/recovery-file.json
+
+# General
+.DS_Store
