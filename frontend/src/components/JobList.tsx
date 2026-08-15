@@ -206,7 +206,7 @@ export function JobList() {
         }
 
         const [client, workerAgent, verifierAgent, amount, deadline, proofURI, status] =
-          result.result as [
+          result.result as unknown as [
             `0x${string}`,
             `0x${string}`,
             `0x${string}`,
