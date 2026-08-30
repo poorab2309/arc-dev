@@ -8,6 +8,11 @@ contracts/broadcast/
 circle-sdk/node_modules/
 circle-sdk/.env
 circle-sdk/recovery-file.json
+frontend/node_modules/
+frontend/.next/
+frontend/.env
+frontend/.env.local
 
 # General
+arc-contracts/
 .DS_Store

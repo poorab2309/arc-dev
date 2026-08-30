@@ -1,19 +1,19 @@
 "use client";
 
-import { useAccount, useConnect, useDisconnect } from "wagmi";
-import { injected } from "wagmi/connectors";
+import { useConnection, useConnect, useDisconnect } from "wagmi";
 
 function truncateAddress(address: string): string {
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
 }
 
 export function ConnectWallet() {
-  const { address, isConnected } = useAccount();
+  const { address, isConnected } = useConnection();
   const { connect, connectors, isPending } = useConnect();
   const { disconnect } = useDisconnect();
 
-  const injectedConnector =
-    connectors.find((connector) => connector.id === "injected") ?? injected();
+  const injectedConnector = connectors.find(
+    (connector) => connector.id === "injected"
+  );
 
   if (isConnected && address) {
     return (
@@ -21,6 +21,7 @@ export function ConnectWallet() {
         <span className="font-mono text-sm text-zinc-700 dark:text-zinc-300">
           {truncateAddress(address)}
         </span>
+
         <button
           type="button"
           onClick={() => disconnect()}
@@ -35,8 +36,12 @@ export function ConnectWallet() {
   return (
     <button
       type="button"
-      disabled={isPending}
-      onClick={() => connect({ connector: injectedConnector })}
+      disabled={isPending || !injectedConnector}
+      onClick={() => {
+        if (injectedConnector) {
+          connect({ connector: injectedConnector });
+        }
+      }}
       className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
     >
       {isPending ? "Connecting…" : "Connect Wallet"}

@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Arc Job Escrow",
+  title: "AgentEscrow",
   description: "Trustless USDC escrow for AI agent work, verified on Arc testnet",
 };
 
