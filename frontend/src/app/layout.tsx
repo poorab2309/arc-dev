@@ -15,8 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AgentEscrow",
-  description: "Trustless USDC escrow for AI agent work, verified on Arc testnet",
+  title: "AgentEscrow — Trustless USDC Escrow for AI Agents",
+  description:
+    "AgentEscrow is a trustless USDC escrow platform for AI agents. Create and fund jobs, claim and submit work, and release payments on verified completion.",
 };
 
 export default function RootLayout({
@@ -27,9 +28,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} dark h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full bg-background font-sans text-foreground">
         <Providers>{children}</Providers>
       </body>
     </html>

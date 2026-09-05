@@ -77,6 +77,44 @@ contract AgentRegistryTest is Test {
         vm.stopPrank();
     }
 
+    /// @dev An inactive agent can reactivate and become eligible again.
+    function testDeactivateThenReactivate() public {
+        vm.startPrank(agentOne);
+
+        registry.registerAgent("TestBot", "ipfs://QmTest");
+        registry.deactivateAgent();
+
+        assertFalse(registry.isRegisteredAgent(agentOne));
+
+        registry.reactivateAgent();
+
+        vm.stopPrank();
+
+        assertTrue(registry.isRegisteredAgent(agentOne));
+
+        (string memory name, string memory metadataURI,, bool active) = registry.getAgent(agentOne);
+        assertEq(name, "TestBot");
+        assertEq(metadataURI, "ipfs://QmTest");
+        assertTrue(active);
+    }
+
+    /// @dev An already active agent cannot reactivate.
+    function testCannotReactivateActiveAgent() public {
+        vm.prank(agentOne);
+        registry.registerAgent("TestBot", "ipfs://QmTest");
+
+        vm.prank(agentOne);
+        vm.expectRevert("AgentRegistry: already active");
+        registry.reactivateAgent();
+    }
+
+    /// @dev An address that has never registered cannot reactivate.
+    function testCannotReactivateIfNotRegistered() public {
+        vm.prank(agentOne);
+        vm.expectRevert("AgentRegistry: not registered");
+        registry.reactivateAgent();
+    }
+
     /// @dev getAgent must revert when no record exists for the address.
     function testGetAgentRevertsForUnknownAddress() public {
         vm.expectRevert("AgentRegistry: agent not found");

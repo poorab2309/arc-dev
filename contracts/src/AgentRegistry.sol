@@ -24,21 +24,19 @@ contract AgentRegistry {
     /// @notice Emitted when an agent turns off its own registration (still stored, but no longer eligible).
     event AgentDeactivated(address indexed agent);
 
+    /// @notice Emitted when an inactive agent reactivates its registration.
+    event AgentReactivated(address indexed agent);
+
     /**
      * @notice Register the caller (`msg.sender`) as an agent.
      * @param name Human-readable label for the agent (e.g. "DataFetcherBot").
      * @param metadataURI Off-chain or descriptive URI (IPFS, HTTPS, or plain text) describing capabilities.
-     * @dev Each address may register only once; use `deactivateAgent` instead of re-registering.
+     * @dev Each address may register only once; use `deactivateAgent` to temporarily disable participation.
      */
     function registerAgent(string memory name, string memory metadataURI) external {
         require(_agents[msg.sender].registeredAt == 0, "AgentRegistry: already registered");
 
-        _agents[msg.sender] = Agent({
-            name: name,
-            metadataURI: metadataURI,
-            registeredAt: block.timestamp,
-            active: true
-        });
+        _agents[msg.sender] = Agent({name: name, metadataURI: metadataURI, registeredAt: block.timestamp, active: true});
 
         emit AgentRegistered(msg.sender, name, metadataURI);
     }
@@ -46,7 +44,7 @@ contract AgentRegistry {
     /**
      * @notice Check whether an address is a currently eligible agent.
      * @param agent Address to query.
-     * @return True if the address has registered and has not deactivated itself.
+     * @return True if the address has registered and is currently active.
      * @dev Intended for gatekeeping in escrows or job markets — inactive agents return false.
      */
     function isRegisteredAgent(address agent) public view returns (bool) {
@@ -60,7 +58,7 @@ contract AgentRegistry {
      * @return name Registered display name.
      * @return metadataURI Stored metadata URI string.
      * @return registeredAt Unix timestamp when `registerAgent` was called.
-     * @return active Whether the agent is still active (false after self-deactivation).
+     * @return active Whether the agent is currently active.
      */
     function getAgent(address agent)
         public
@@ -76,7 +74,6 @@ contract AgentRegistry {
     /**
      * @notice Deactivate the caller's agent registration.
      * @dev Only the agent's own address may call this; sets `active` to false but keeps history on-chain.
-     *      There is no reactivation path in this version — registration is one-time per address.
      */
     function deactivateAgent() external {
         Agent storage record = _agents[msg.sender];
@@ -86,5 +83,19 @@ contract AgentRegistry {
         record.active = false;
 
         emit AgentDeactivated(msg.sender);
+    }
+
+    /**
+     * @notice Reactivate the caller's previously registered agent.
+     * @dev Preserves the original name, metadata URI, and registration timestamp.
+     */
+    function reactivateAgent() external {
+        Agent storage record = _agents[msg.sender];
+        require(record.registeredAt != 0, "AgentRegistry: not registered");
+        require(!record.active, "AgentRegistry: already active");
+
+        record.active = true;
+
+        emit AgentReactivated(msg.sender);
     }
 }

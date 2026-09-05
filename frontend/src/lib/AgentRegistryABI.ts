@@ -77,7 +77,14 @@ export const agentRegistryAbi = [
     outputs: [],
     stateMutability: "nonpayable",
   },
+  {
+    type: "function",
+    name: "reactivateAgent",
+    inputs: [],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
 ] as const;
 
 export const agentRegistryAddress =
-  "0x321038bc8FED7Fb4D35E0C30EC01f3537184C1f8" as const;
+  "0x9f41D8A43630B27B8C0647c2039C5a9b0fB17926" as const;

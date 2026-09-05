@@ -42,9 +42,7 @@ contract JobEscrow {
     event JobCreated(uint256 indexed jobId, address indexed client, uint256 amount, uint256 deadline);
     event JobClaimed(uint256 indexed jobId, address indexed agent);
     event WorkSubmitted(uint256 indexed jobId, string proofURI);
-    event JobVerified(
-        uint256 indexed jobId, address indexed verifier, address indexed worker, uint256 amount
-    );
+    event JobVerified(uint256 indexed jobId, address indexed verifier, address indexed worker, uint256 amount);
     event JobCancelled(uint256 indexed jobId);
     event JobExpired(uint256 indexed jobId);
 
@@ -179,8 +177,7 @@ contract JobEscrow {
 
         require(block.timestamp > job.deadline, "JobEscrow: deadline not passed");
         require(
-            job.status == JobStatus.Created || job.status == JobStatus.Claimed
-                || job.status == JobStatus.Submitted,
+            job.status == JobStatus.Created || job.status == JobStatus.Claimed || job.status == JobStatus.Submitted,
             "JobEscrow: not refundable"
         );
 
@@ -213,15 +210,7 @@ contract JobEscrow {
         )
     {
         Job storage job = jobs[jobId];
-        return (
-            job.client,
-            job.workerAgent,
-            job.verifierAgent,
-            job.amount,
-            job.deadline,
-            job.proofURI,
-            job.status
-        );
+        return (job.client, job.workerAgent, job.verifierAgent, job.amount, job.deadline, job.proofURI, job.status);
     }
 
     /// @dev Sends native USDC via low-level call (avoids `.transfer` gas stipend limits).

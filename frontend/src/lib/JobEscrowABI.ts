@@ -4,6 +4,7 @@ export const jobEscrowAbi = [
     inputs: [{ name: "agentRegistryAddress", type: "address", internalType: "address" }],
     stateMutability: "nonpayable",
   },
+
   {
     type: "function",
     name: "agentRegistry",
@@ -11,6 +12,7 @@ export const jobEscrowAbi = [
     outputs: [{ name: "", type: "address", internalType: "contract AgentRegistry" }],
     stateMutability: "view",
   },
+
   {
     type: "function",
     name: "cancelJob",
@@ -18,6 +20,7 @@ export const jobEscrowAbi = [
     outputs: [],
     stateMutability: "nonpayable",
   },
+
   {
     type: "function",
     name: "claimJob",
@@ -25,6 +28,7 @@ export const jobEscrowAbi = [
     outputs: [],
     stateMutability: "nonpayable",
   },
+
   {
     type: "function",
     name: "createJob",
@@ -32,6 +36,7 @@ export const jobEscrowAbi = [
     outputs: [{ name: "jobId", type: "uint256", internalType: "uint256" }],
     stateMutability: "payable",
   },
+
   {
     type: "function",
     name: "getJob",
@@ -47,6 +52,7 @@ export const jobEscrowAbi = [
     ],
     stateMutability: "view",
   },
+
   {
     type: "function",
     name: "jobs",
@@ -62,6 +68,7 @@ export const jobEscrowAbi = [
     ],
     stateMutability: "view",
   },
+
   {
     type: "function",
     name: "nextJobId",
@@ -69,6 +76,7 @@ export const jobEscrowAbi = [
     outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
     stateMutability: "view",
   },
+
   {
     type: "function",
     name: "refundExpired",
@@ -76,6 +84,7 @@ export const jobEscrowAbi = [
     outputs: [],
     stateMutability: "nonpayable",
   },
+
   {
     type: "function",
     name: "submitWork",
@@ -86,6 +95,7 @@ export const jobEscrowAbi = [
     outputs: [],
     stateMutability: "nonpayable",
   },
+
   {
     type: "function",
     name: "verifyAndRelease",
@@ -93,12 +103,16 @@ export const jobEscrowAbi = [
     outputs: [],
     stateMutability: "nonpayable",
   },
+
   {
     type: "event",
     name: "JobCancelled",
-    inputs: [{ name: "jobId", type: "uint256", indexed: true, internalType: "uint256" }],
+    inputs: [
+      { name: "jobId", type: "uint256", indexed: true, internalType: "uint256" },
+    ],
     anonymous: false,
   },
+
   {
     type: "event",
     name: "JobClaimed",
@@ -108,6 +122,7 @@ export const jobEscrowAbi = [
     ],
     anonymous: false,
   },
+
   {
     type: "event",
     name: "JobCreated",
@@ -119,12 +134,16 @@ export const jobEscrowAbi = [
     ],
     anonymous: false,
   },
+
   {
     type: "event",
     name: "JobExpired",
-    inputs: [{ name: "jobId", type: "uint256", indexed: true, internalType: "uint256" }],
+    inputs: [
+      { name: "jobId", type: "uint256", indexed: true, internalType: "uint256" },
+    ],
     anonymous: false,
   },
+
   {
     type: "event",
     name: "JobVerified",
@@ -136,6 +155,7 @@ export const jobEscrowAbi = [
     ],
     anonymous: false,
   },
+
   {
     type: "event",
     name: "WorkSubmitted",
@@ -147,4 +167,5 @@ export const jobEscrowAbi = [
   },
 ] as const;
 
-export const jobEscrowAddress = "0x255c13aBae3bfADdd928A396757b28cE2d5Bb618" as const;
+export const jobEscrowAddress =
+  "0x40aA2523819aD1aa1A07E4e6ba5586881741A532" as const;

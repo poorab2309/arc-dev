@@ -1,9 +1,10 @@
 "use client";
 
+import { LogOut, Loader2, Wallet } from "lucide-react";
 import { useConnection, useConnect, useDisconnect } from "wagmi";
 
-function truncateAddress(address: string): string {
-  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+function shortenAddress(address: string): string {
+  return `${address.slice(0, 6)}…${address.slice(-4)}`;
 }
 
 export function ConnectWallet() {
@@ -17,17 +18,23 @@ export function ConnectWallet() {
 
   if (isConnected && address) {
     return (
-      <div className="flex items-center gap-3 rounded-lg border border-zinc-200 bg-white px-4 py-2 shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
-        <span className="font-mono text-sm text-zinc-700 dark:text-zinc-300">
-          {truncateAddress(address)}
+      <div className="flex items-center gap-1 rounded-lg border border-border bg-card/60 py-1 pr-1 pl-2.5">
+        <span
+          className="size-2 rounded-full bg-success shadow-[0_0_0_3px] shadow-success/20"
+          aria-hidden="true"
+        />
+
+        <span className="px-1.5 font-mono text-xs text-foreground">
+          {shortenAddress(address)}
         </span>
 
         <button
           type="button"
           onClick={() => disconnect()}
-          className="rounded-md bg-zinc-100 px-3 py-1.5 text-sm font-medium text-zinc-800 transition-colors hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700"
+          aria-label="Disconnect wallet"
+          className="grid size-7 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none"
         >
-          Disconnect
+          <LogOut className="size-3.5" aria-hidden="true" />
         </button>
       </div>
     );
@@ -42,8 +49,14 @@ export function ConnectWallet() {
           connect({ connector: injectedConnector });
         }
       }}
-      className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
+      className="inline-flex h-9 items-center justify-center gap-2 rounded-lg bg-primary px-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
     >
+      {isPending ? (
+        <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+      ) : (
+        <Wallet className="size-4" aria-hidden="true" />
+      )}
+
       {isPending ? "Connecting…" : "Connect Wallet"}
     </button>
   );
